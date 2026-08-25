@@ -3,12 +3,6 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import {
-  Show,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs"
 import ThemeToggle from "./ThemeToggle"
 
 export default function Navbar() {
@@ -126,28 +120,14 @@ export default function Navbar() {
             </li>
           </ul>
 
-          {/* Mobile Clerk buttons */}
+          {/* Mobile auth buttons */}
           <div className="flex flex-col items-center space-y-4 w-64">
             <ThemeToggle />
-            <Show when="signed-out">
-              <SignInButton fallbackRedirectUrl="/dashboard">
-                <button className="w-full border border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-black transition-colors text-center cursor-pointer">
-                  Log in
-                </button>
-              </SignInButton>
-
-              <SignUpButton fallbackRedirectUrl="/dashboard">
-                <button className="w-full bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors text-center cursor-pointer">
-                  Sign up
-                </button>
-              </SignUpButton>
-            </Show>
-
-            <Show when="signed-in">
-              <div className="flex items-center justify-center">
-                <UserButton appearance={{ elements: { avatarBox: "w-12 h-12" } }} />
-              </div>
-            </Show>
+            <Link href="/dashboard" onClick={closeMenu}>
+              <button className="w-full bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors text-center cursor-pointer">
+                Dashboard
+              </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -179,26 +159,14 @@ export default function Navbar() {
         </li>
       </ul>
 
-      {/* Desktop Clerk buttons */}
+      {/* Desktop auth buttons */}
       <div className="hidden md:flex items-center gap-3">
         <ThemeToggle />
-        <Show when="signed-out">
-          <SignInButton fallbackRedirectUrl="/dashboard">
-            <button className="border border-black dark:border-white text-black dark:text-white px-4 py-2 rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
-              Log in
-            </button>
-          </SignInButton>
-
-          <SignUpButton fallbackRedirectUrl="/dashboard">
-            <button className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full font-medium hover:bg-gray-900 dark:hover:bg-gray-200 cursor-pointer">
-              Sign up
-            </button>
-          </SignUpButton>
-        </Show>
-
-        <Show when="signed-in">
-          <UserButton appearance={{ elements: { avatarBox: "w-12 h-12" } }} />
-        </Show>
+        <Link href="/dashboard">
+          <button className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full font-medium hover:bg-gray-900 dark:hover:bg-gray-200 cursor-pointer">
+            Dashboard
+          </button>
+        </Link>
       </div>
     </nav>
   )

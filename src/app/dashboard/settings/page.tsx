@@ -1,4 +1,3 @@
-import { UserProfile } from "@clerk/nextjs"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
@@ -22,15 +21,7 @@ export default function AccountSettingsPage() {
         <SiteHeader />
         <div className="flex flex-1 flex-col items-center gap-4 p-4 md:p-6">
           <h1 className="text-2xl font-semibold">Account settings</h1>
-          <UserProfile
-            routing="hash"
-            appearance={{
-              elements: {
-                rootBox: "w-full max-w-3xl",
-                cardBox: "w-full",
-              },
-            }}
-          />
+          <p className="text-muted-foreground">Account settings functionality coming soon.</p>
         </div>
       </SidebarInset>
     </SidebarProvider>

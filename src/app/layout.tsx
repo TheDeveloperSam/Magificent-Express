@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { ClerkProvider } from "@clerk/nextjs"
 import { Google_Sans, Geist } from "next/font/google"
 import "./globals.css"
 import Navbar from "@/components/Navbar"
@@ -32,17 +31,15 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        <ClerkProvider>
-          <Providers>
-            <Navbar />
+        <Providers>
+          <Navbar />
 
-            <main className="flex-1">
-              {children}
-            </main>
+          <main className="flex-1">
+            {children}
+          </main>
 
-            <Footer />
-          </Providers>
-        </ClerkProvider>
+          <Footer />
+        </Providers>
       </body>
     </html>
   )
