@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isNavbarVisible, setIsNavbarVisible] = useState(false)
   const { isSignedIn, signIn, signOut } = useAuth()
 
   useEffect(() => {
@@ -18,6 +19,19 @@ export default function Navbar() {
     }
   }, [isMenuOpen])
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (e.clientY < 50) {
+        setIsNavbarVisible(true)
+      } else {
+        setIsNavbarVisible(false)
+      }
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
   const toggleMenu = () => {
     setIsMenuOpen((open) => !open)
   }
@@ -27,7 +41,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="w-full px-4 py-3 flex justify-between items-center bg-white dark:bg-surface shadow-sm relative z-50 font-sans dark:shadow-gray-900/20">
+    <nav className={`w-full px-4 py-3 flex justify-between items-center bg-white dark:bg-surface shadow-sm relative z-50 font-sans dark:shadow-gray-900/20 transition-transform duration-300 ${isNavbarVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       {/* Logo */}
       <div>
         <Link href="/" onClick={closeMenu}>

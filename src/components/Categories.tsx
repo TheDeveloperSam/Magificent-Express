@@ -42,7 +42,7 @@ const categories: Category[] = [
 
 export default function Categories() {
   return (
-    <section className="w-full bg-white dark:bg-surface px-4 py-16 md:py-24">
+    <section className="w-full bg-white dark:bg-surface px-4 py-16 md:py-24 pt-20">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-bold md:text-4xl text-gray-900 dark:text-white">
