@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext"
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isNavbarVisible, setIsNavbarVisible] = useState(false)
-  const { isSignedIn, signIn, signOut } = useAuth()
+  const { isSignedIn, signIn, signOut, register } = useAuth()
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "unset"
@@ -154,12 +154,20 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              <button 
-                onClick={() => { signIn(); closeMenu(); }}
-                className="w-full bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors text-center cursor-pointer"
-              >
-                Sign in
-              </button>
+              <>
+                <button 
+                  onClick={() => { signIn(); closeMenu(); }}
+                  className="w-full bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors text-center cursor-pointer"
+                >
+                  Sign in
+                </button>
+                <button 
+                  onClick={() => { register(); closeMenu(); }}
+                  className="w-full border border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-black transition-colors text-center cursor-pointer"
+                >
+                  Sign up
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -210,12 +218,20 @@ export default function Navbar() {
             </button>
           </>
         ) : (
-          <button 
-            onClick={signIn}
-            className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full font-medium hover:bg-gray-900 dark:hover:bg-gray-200 cursor-pointer"
-          >
-            Sign in
-          </button>
+          <>
+            <button 
+              onClick={signIn}
+              className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full font-medium hover:bg-gray-900 dark:hover:bg-gray-200 cursor-pointer"
+            >
+              Sign in
+            </button>
+            <button 
+              onClick={register}
+              className="border border-black dark:border-white text-black dark:text-white px-4 py-2 rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+            >
+              Sign up
+            </button>
+          </>
         )}
       </div>
     </nav>

@@ -1,23 +1,25 @@
 "use client"
 
-import { createContext, useContext, useState, ReactNode } from "react"
+import { createContext, useContext, ReactNode } from "react"
+import { useKindeAuth } from "@kinde-oss/kinde-auth-react"
 
 interface AuthContextType {
   isSignedIn: boolean
   signIn: () => void
   signOut: () => void
+  register: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isSignedIn, setIsSignedIn] = useState(false)
+  const { isAuthenticated, login, logout, register } = useKindeAuth()
 
-  const signIn = () => setIsSignedIn(true)
-  const signOut = () => setIsSignedIn(false)
+  const signIn = () => login()
+  const signOut = () => logout()
 
   return (
-    <AuthContext.Provider value={{ isSignedIn, signIn, signOut }}>
+    <AuthContext.Provider value={{ isSignedIn: isAuthenticated, signIn, signOut, register }}>
       {children}
     </AuthContext.Provider>
   )
