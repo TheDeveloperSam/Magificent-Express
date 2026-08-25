@@ -26,13 +26,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
-      <html
-        lang="en"
-        className={cn("h-full", "antialiased", googleSans.variable, "font-sans", geist.variable)}
-        suppressHydrationWarning
-      >
-        <body className="min-h-full flex flex-col" suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn("h-full", "antialiased", googleSans.variable, "font-sans", geist.variable)}
+      suppressHydrationWarning
+    >
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <ClerkProvider>
           <Providers>
             <Navbar />
 
@@ -42,8 +42,8 @@ export default function RootLayout({
 
             <Footer />
           </Providers>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   )
 }

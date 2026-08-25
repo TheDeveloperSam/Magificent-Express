@@ -1,4 +1,7 @@
 import { UserProfile } from "@clerk/nextjs"
+import { AppSidebar } from "@/components/app-sidebar"
+import { SiteHeader } from "@/components/site-header"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 export const metadata = {
   title: "Account settings",
@@ -6,17 +9,30 @@ export const metadata = {
 
 export default function AccountSettingsPage() {
   return (
-    <div className="flex flex-1 flex-col items-center gap-4 p-4 md:p-6">
-      <h1 className="text-2xl font-semibold">Account settings</h1>
-      <UserProfile
-        routing="hash"
-        appearance={{
-          elements: {
-            rootBox: "w-full max-w-3xl",
-            cardBox: "w-full",
-          },
-        }}
-      />
-    </div>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar variant="inset" />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col items-center gap-4 p-4 md:p-6">
+          <h1 className="text-2xl font-semibold">Account settings</h1>
+          <UserProfile
+            routing="hash"
+            appearance={{
+              elements: {
+                rootBox: "w-full max-w-3xl",
+                cardBox: "w-full",
+              },
+            }}
+          />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
