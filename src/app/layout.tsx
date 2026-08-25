@@ -1,10 +1,13 @@
 import type { Metadata } from "next"
 import { ClerkProvider } from "@clerk/nextjs"
-import { Google_Sans } from "next/font/google"
+import { Google_Sans, Geist } from "next/font/google"
 import "./globals.css"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
 import { Providers } from "@/components/providers"
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const googleSans = Google_Sans({
   weight: "600",
@@ -26,7 +29,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html
         lang="en"
-        className={`${googleSans.variable} h-full antialiased`}
+        className={cn("h-full", "antialiased", googleSans.variable, "font-sans", geist.variable)}
         suppressHydrationWarning
       >
         <body className="min-h-full flex flex-col" suppressHydrationWarning>
