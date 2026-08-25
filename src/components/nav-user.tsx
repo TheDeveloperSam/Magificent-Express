@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useAuth } from "@/contexts/AuthContext"
 
 import {
   Avatar,
@@ -25,6 +26,7 @@ import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, Lo
 
 export function NavUser() {
   const { isMobile } = useSidebar()
+  const { signOut } = useAuth()
 
   const name = "User"
   const email = "user@example.com"
@@ -87,7 +89,7 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem render={<Link href="/" />}>
+            <DropdownMenuItem onClick={signOut}>
               <LogOutIcon />
               Log out
             </DropdownMenuItem>
