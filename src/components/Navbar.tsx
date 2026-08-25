@@ -4,9 +4,11 @@ import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import ThemeToggle from "./ThemeToggle"
+import { useAuth } from "@/contexts/AuthContext"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { isSignedIn, signIn, signOut } = useAuth()
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "unset"
@@ -123,11 +125,28 @@ export default function Navbar() {
           {/* Mobile auth buttons */}
           <div className="flex flex-col items-center space-y-4 w-64">
             <ThemeToggle />
-            <Link href="/dashboard" onClick={closeMenu}>
-              <button className="w-full bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors text-center cursor-pointer">
-                Dashboard
+            {isSignedIn ? (
+              <>
+                <Link href="/dashboard" onClick={closeMenu}>
+                  <button className="w-full bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors text-center cursor-pointer">
+                    Dashboard
+                  </button>
+                </Link>
+                <button 
+                  onClick={() => { signOut(); closeMenu(); }}
+                  className="w-full border border-white text-white px-6 py-3 rounded-full font-medium hover:bg-white hover:text-black transition-colors text-center cursor-pointer"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <button 
+                onClick={() => { signIn(); closeMenu(); }}
+                className="w-full bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors text-center cursor-pointer"
+              >
+                Sign in
               </button>
-            </Link>
+            )}
           </div>
         </div>
       </div>
@@ -162,11 +181,28 @@ export default function Navbar() {
       {/* Desktop auth buttons */}
       <div className="hidden md:flex items-center gap-3">
         <ThemeToggle />
-        <Link href="/dashboard">
-          <button className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full font-medium hover:bg-gray-900 dark:hover:bg-gray-200 cursor-pointer">
-            Dashboard
+        {isSignedIn ? (
+          <>
+            <Link href="/dashboard">
+              <button className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full font-medium hover:bg-gray-900 dark:hover:bg-gray-200 cursor-pointer">
+                Dashboard
+              </button>
+            </Link>
+            <button 
+              onClick={signOut}
+              className="border border-black dark:border-white text-black dark:text-white px-4 py-2 rounded-full font-medium hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+            >
+              Sign out
+            </button>
+          </>
+        ) : (
+          <button 
+            onClick={signIn}
+            className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-full font-medium hover:bg-gray-900 dark:hover:bg-gray-200 cursor-pointer"
+          >
+            Sign in
           </button>
-        </Link>
+        )}
       </div>
     </nav>
   )
