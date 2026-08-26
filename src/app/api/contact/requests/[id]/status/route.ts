@@ -4,10 +4,10 @@ import { statusUpdateSchema } from '@/lib/contact-validation'
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     const body = await request.json()
     
     // Validate the request body
@@ -17,7 +17,7 @@ export async function PUT(
       return NextResponse.json(
         { 
           error: 'Validation failed', 
-          details: validationResult.error.errors 
+          details: validationResult.error.issues 
         },
         { status: 400 }
       )

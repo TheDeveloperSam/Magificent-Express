@@ -98,7 +98,7 @@ export default function EmailContactModal({ isOpen, onClose }: EmailContactModal
 
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-900 dark:text-white">Select a common subject:</label>
-            <Select value={selectedSubject} onValueChange={setSelectedSubject}>
+            <Select value={selectedSubject} onValueChange={(value) => value && setSelectedSubject(value)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>

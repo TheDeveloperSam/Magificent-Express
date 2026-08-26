@@ -63,8 +63,8 @@ export default function ContactRequestDetailPage() {
     }
   }
 
-  const handleStatusChange = async (newStatus: string) => {
-    if (!request) return
+  const handleStatusChange = async (newStatus: string | null) => {
+    if (!request || !newStatus) return
 
     try {
       setIsUpdating(true)

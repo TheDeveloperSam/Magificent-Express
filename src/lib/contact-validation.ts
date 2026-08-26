@@ -31,7 +31,7 @@ export const contactFormSchema = z.object({
     .max(20, 'Phone number must be less than 20 characters')
     .regex(/^[+]?[\d\s\-()]+$/, 'Please enter a valid phone number'),
   eventType: z.enum(EVENT_TYPES, {
-    required_error: 'Please select an event type'
+    message: 'Please select an event type'
   }),
   subject: z.string()
     .min(3, 'Subject must be at least 3 characters')
@@ -45,7 +45,7 @@ export type ContactFormData = z.infer<typeof contactFormSchema>
 
 export const statusUpdateSchema = z.object({
   status: z.enum(REQUEST_STATUSES, {
-    required_error: 'Please select a valid status'
+    message: 'Please select a valid status'
   })
 })
 
