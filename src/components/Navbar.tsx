@@ -10,6 +10,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isNavbarVisible, setIsNavbarVisible] = useState(true)
   const scrollYRef = useRef(0)
+  const mouseYRef = useRef(0)
   const { isSignedIn, signIn, signOut, register } = useAuth()
 
   useEffect(() => {
@@ -21,18 +22,17 @@ export default function Navbar() {
   }, [isMenuOpen])
 
   useEffect(() => {
-    const sliderThreshold = 600
+    const topThreshold = 80
+    const hoverRevealY = 50
+
     const handleScroll = () => {
       const newScrollY = window.scrollY
       scrollYRef.current = newScrollY
-      if (newScrollY < sliderThreshold) {
+      if (newScrollY < topThreshold) {
         setIsNavbarVisible(true)
-      }
-    }
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (scrollYRef.current >= sliderThreshold) {
-        if (e.clientY < 50) {
+      } else {
+        // Below the top area: hide by default, but keep visible if cursor is at very top
+        if (mouseYRef.current < hoverRevealY) {
           setIsNavbarVisible(true)
         } else {
           setIsNavbarVisible(false)
@@ -40,7 +40,24 @@ export default function Navbar() {
       }
     }
 
-    window.addEventListener('scroll', handleScroll)
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseYRef.current = e.clientY
+      if (scrollYRef.current < topThreshold) {
+        // At the top of the website navbar is always visible
+        setIsNavbarVisible(true)
+        return
+      }
+      if (e.clientY < hoverRevealY) {
+        setIsNavbarVisible(true)
+      } else {
+        setIsNavbarVisible(false)
+      }
+    }
+
+    // Initialize correct state on mount (e.g., reload mid-page)
+    handleScroll()
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('mousemove', handleMouseMove)
 
     return () => {
@@ -58,7 +75,10 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={`w-full px-4 py-3 flex justify-between items-center bg-white dark:bg-surface shadow-sm relative z-50 font-sans dark:shadow-gray-900/20 transition-transform duration-300 ${isNavbarVisible ? 'translate-y-0' : '-translate-y-full'}`}>
+    <>
+      {/* Spacer to prevent content jump when navbar is fixed */}
+      <div aria-hidden className="h-[84px] w-full shrink-0" />
+      <nav className={`fixed top-0 left-0 right-0 w-full px-4 py-3 flex justify-between items-center bg-white dark:bg-surface shadow-sm z-50 font-sans dark:shadow-gray-900/20 transition-transform duration-300 ${isNavbarVisible ? 'translate-y-0' : '-translate-y-full'}`}>
       {/* Logo */}
       <div>
         <Link href="/" onClick={closeMenu}>
@@ -250,7 +270,8 @@ export default function Navbar() {
             </button>
           </>
         )}
-      </div>
-    </nav>
+        </div>
+      </nav>
+    </>
   )
 }
