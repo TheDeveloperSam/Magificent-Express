@@ -1,6 +1,6 @@
 "use client"
 
-import { ThemeProvider } from "next-themes"
+import { ThemeProvider } from "@/components/theme-provider"
 import type { ReactNode } from "react"
 import { AuthProvider } from "@/contexts/AuthContext"
 import { KindeProvider } from "@kinde-oss/kinde-auth-react"
@@ -13,7 +13,7 @@ export function Providers({ children }: { children: ReactNode }) {
       redirectUri="https://magificent-express.vercel.app"
       logoutUri="https://magificent-express.vercel.app"
     >
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ThemeProvider>
         <AuthProvider>
           {children}
         </AuthProvider>

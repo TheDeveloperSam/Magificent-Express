@@ -14,6 +14,8 @@ const googleSans = Google_Sans({
   variable: "--font-google-sans",
 })
 
+const themeScript = `(function(){try{var d=document.documentElement,c=d.classList,e=localStorage.getItem('theme');if(e==='dark'||(e!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches)){c.add('dark');d.style.colorScheme='dark'}else{c.add('light');d.style.colorScheme='light'}}catch(t){}})()`
+
 export const metadata: Metadata = {
   title: "Magnificent Express",
   description: "Magnificent Express",
@@ -30,6 +32,7 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", googleSans.variable, "font-sans", geist.variable)}
       suppressHydrationWarning
     >
+      <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Providers>
           <Navbar />
