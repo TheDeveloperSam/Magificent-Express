@@ -4,19 +4,21 @@ import { useState } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { MapPin, Phone, Mail, Clock, User, MailIcon, PhoneIcon, MessageSquare, ArrowRight } from "lucide-react"
+import { MapPin, Phone, Mail, Clock, User, MailIcon, MessageSquare, ArrowRight } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
 import EmailContactModal from "./EmailContactModal"
 import { EVENT_TYPES } from "@/lib/contact-validation"
+import IntlTelInput from "@intl-tel-input/react/with-utils"
+import "intl-tel-input/dist/css/intlTelInput.css"
 
 // Form schema for the Get in Touch card (no subject, newsletter optional)
 const getInTouchSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters").max(100),
   email: z.string().email("Please enter a valid email").max(255),
-  phone: z.string().min(10, "Phone must be at least 10 characters").max(20).regex(/^[+]?[\d\s\-()]+$/, "Invalid phone"),
+  phone: z.string().min(8, "Please enter a valid phone number").max(20),
   eventType: z.enum(EVENT_TYPES, { message: "Please select an event type" } as any).or(z.string().min(1)) as any,
   message: z.string().min(10, "Message must be at least 10 characters").max(2000),
   newsletter: z.boolean().optional(),
@@ -28,6 +30,7 @@ export default function ContactSection() {
   const [isManualModalOpen, setIsManualModalOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [phoneValid, setPhoneValid] = useState(true)
 
   const {
     register,
@@ -48,10 +51,12 @@ export default function ContactSection() {
   })
 
   const onSubmit = async (data: GetInTouchData) => {
+    if (!phoneValid && data.phone) {
+      toast.error("Please enter a valid phone number.")
+      return
+    }
     setIsSubmitting(true)
     try {
-      // Map to existing API shape: subject derived from eventType
-      // API only accepts EVENT_TYPES; map "General Inquiry" -> "Other"
       const apiEventType = data.eventType === "General Inquiry" ? "Other" : data.eventType
       const payload = {
         fullName: data.fullName,
@@ -176,7 +181,7 @@ export default function ContactSection() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="john@example.com"
+                    placeholder="johndoe@example.com"
                     className={`pl-9 bg-white border-gray-200 rounded-lg h-10 text-sm ${errors.email ? "border-red-500" : ""}`}
                     {...register("email")}
                   />
@@ -188,18 +193,33 @@ export default function ContactSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <Label htmlFor="phone" className="text-xs font-medium text-gray-700">
-                  Phone
+                  Phone Number
                 </Label>
-                <div className="relative">
-                  <PhoneIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500" />
-                  <Input
-                    id="phone"
-                    placeholder="(123) 456-7890"
-                    className={`pl-9 bg-white border-gray-200 rounded-lg h-10 text-sm ${errors.phone ? "border-red-500" : ""}`}
-                    {...register("phone")}
-                  />
-                </div>
-                {errors.phone && <p className="text-xs text-red-500">{errors.phone.message}</p>}
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="[&_.iti]:w-full [&_.iti__tel-input]:h-10 [&_.iti__tel-input]:bg-white [&_.iti__tel-input]:rounded-lg [&_.iti__tel-input]:border-gray-200 [&_.iti__tel-input]:text-sm">
+                      <IntlTelInput
+                        initialCountry="us"
+                        separateDialCode={true}
+                        value={field.value}
+                        onChangeNumber={(num) => {
+                          field.onChange(num)
+                        }}
+                        onChangeValidity={setPhoneValid}
+                        inputProps={{
+                          id: "phone",
+                          placeholder: "(123) 456 7890",
+                          className: `w-full h-10 bg-white border rounded-lg text-sm ${errors.phone || !phoneValid ? "border-red-500" : "border-gray-200"}`,
+                        }}
+                      />
+                    </div>
+                  )}
+                />
+                {(errors.phone || !phoneValid) && (
+                  <p className="text-xs text-red-500">{errors.phone?.message || "Please enter a valid phone number."}</p>
+                )}
               </div>
 
               <div className="space-y-1.5">
@@ -210,7 +230,7 @@ export default function ContactSection() {
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value as string}>
                       <SelectTrigger className={`bg-white border-gray-200 rounded-lg h-10 text-sm ${errors.eventType ? "border-red-500" : ""}`}>
-                        <SelectValue placeholder="General Inquiry" />
+                        <SelectValue placeholder="Wedding" />
                       </SelectTrigger>
                       <SelectContent>
                         {EVENT_TYPES.map((t) => (
@@ -235,7 +255,7 @@ export default function ContactSection() {
                 <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-orange-500" />
                 <textarea
                   id="message"
-                  placeholder="How can we help you?"
+                  placeholder="How Can we help you?"
                   rows={4}
                   className={`w-full pl-9 pr-3 py-2.5 bg-white border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 text-sm placeholder:text-gray-400 ${
                     errors.message ? "border-red-500" : "border-gray-200"
