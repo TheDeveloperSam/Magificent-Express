@@ -32,8 +32,8 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", googleSans.variable, "font-sans", geist.variable)}
       suppressHydrationWarning
     >
-      <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <Providers>
           <Navbar />
 
