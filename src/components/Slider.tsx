@@ -109,7 +109,7 @@ export default function Slider() {
   }, [nextSlide])
 
   return (
-    <section className="bg-white dark:bg-surface flex items-center justify-center p-2">
+    <section id="flipping-images" className="bg-white dark:bg-surface flex items-center justify-center p-2">
       <div className="w-full max-w-5xl mx-auto relative group">
         <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] overflow-hidden rounded-2xl shadow-2xl border-4 border-gray-200 dark:border-gray-800">
           <div
