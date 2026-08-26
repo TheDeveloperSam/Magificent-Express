@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { useAuth } from "@/contexts/AuthContext"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
@@ -24,7 +23,6 @@ import { REQUEST_STATUSES } from "@/lib/contact-validation"
 import { toast } from "sonner"
 
 export default function ContactRequestDetailPage() {
-  const { isSignedIn } = useAuth()
   const router = useRouter()
   const params = useParams()
   const requestId = params.id as string
@@ -36,13 +34,8 @@ export default function ContactRequestDetailPage() {
   const [notes, setNotes] = useState("")
 
   useEffect(() => {
-    if (!isSignedIn) {
-      router.push("/")
-      return
-    }
-
     fetchRequest()
-  }, [isSignedIn, router, requestId])
+  }, [requestId])
 
   const fetchRequest = async () => {
     try {

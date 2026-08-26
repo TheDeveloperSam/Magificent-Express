@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
@@ -21,7 +20,6 @@ import type { ContactRequest } from "@/lib/contact-storage"
 import { REQUEST_STATUSES } from "@/lib/contact-validation"
 
 export default function ContactRequestsPage() {
-  const { isSignedIn } = useAuth()
   const router = useRouter()
   const [requests, setRequests] = useState<ContactRequest[]>([])
   const [loading, setLoading] = useState(true)
@@ -30,13 +28,8 @@ export default function ContactRequestsPage() {
   const [statusFilter, setStatusFilter] = useState<string>("all")
 
   useEffect(() => {
-    if (!isSignedIn) {
-      router.push("/")
-      return
-    }
-
     fetchRequests()
-  }, [isSignedIn, router])
+  }, [])
 
   const fetchRequests = async () => {
     try {
