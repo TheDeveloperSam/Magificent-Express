@@ -88,18 +88,18 @@ export default function ContactSection() {
   }
 
   return (
-    <section className="w-full bg-black px-4 py-12 md:py-16 lg:py-20">
+    <section className="w-full bg-black px-4 py-12 md:py-16 lg:py-20 font-[var(--font-google-sans)]" style={{ fontFamily: "var(--font-google-sans)" }}>
       <div className="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
         {/* Left: Connect With Us */}
-        <div className="text-white pt-2 lg:pr-8">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold tracking-tight" style={{ fontFamily: "Georgia, serif" }}>
+        <div className="text-white pt-2 lg:pr-8 font-[var(--font-google-sans)]">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight font-[var(--font-google-sans)]" style={{ fontFamily: "var(--font-google-sans)" }}>
             Connect With Us
           </h2>
           <p className="mt-4 text-sm md:text-[15px] leading-6 text-white/70 max-w-xl">
             Have questions about our menu, catering services, or want to know where we&apos;ll be next? Reach out to us through any of the channels below.
           </p>
 
-          <h3 className="mt-8 text-xl font-semibold font-serif" style={{ fontFamily: "Georgia, serif" }}>
+          <h3 className="mt-8 text-xl font-semibold font-[var(--font-google-sans)]" style={{ fontFamily: "var(--font-google-sans)" }}>
             Contact Information
           </h3>
 
@@ -140,8 +140,8 @@ export default function ContactSection() {
         </div>
 
         {/* Right: Get in Touch Card */}
-        <div className="bg-[#f2f2f2] rounded-2xl p-6 md:p-8 shadow-xl">
-          <h3 className="text-center text-2xl md:text-3xl font-bold" style={{ fontFamily: "Georgia, serif" }}>
+        <div className="bg-[#f2f2f2] rounded-2xl p-6 md:p-8 shadow-xl font-[var(--font-google-sans)]">
+          <h3 className="text-center text-2xl md:text-3xl font-bold font-[var(--font-google-sans)]" style={{ fontFamily: "var(--font-google-sans)" }}>
             Get in Touch
           </h3>
           <p className="mt-2 text-center text-sm text-gray-500">
