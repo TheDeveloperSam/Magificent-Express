@@ -2,13 +2,14 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import ThemeToggle from "./ThemeToggle"
 import { useAuth } from "@/contexts/AuthContext"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isNavbarVisible, setIsNavbarVisible] = useState(false)
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true)
+  const scrollYRef = useRef(0)
   const { isSignedIn, signIn, signOut, register } = useAuth()
 
   useEffect(() => {
@@ -20,16 +21,32 @@ export default function Navbar() {
   }, [isMenuOpen])
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (e.clientY < 50) {
+    const sliderThreshold = 600
+    const handleScroll = () => {
+      const newScrollY = window.scrollY
+      scrollYRef.current = newScrollY
+      if (newScrollY < sliderThreshold) {
         setIsNavbarVisible(true)
-      } else {
-        setIsNavbarVisible(false)
       }
     }
 
+    const handleMouseMove = (e: MouseEvent) => {
+      if (scrollYRef.current >= sliderThreshold) {
+        if (e.clientY < 50) {
+          setIsNavbarVisible(true)
+        } else {
+          setIsNavbarVisible(false)
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
     window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
   }, [])
 
   const toggleMenu = () => {
